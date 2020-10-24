@@ -1,6 +1,9 @@
-.vs
-Binaries
-DerivedDataCache
-Intermediate
-Saved
+/.vs
+/Binaries
+/DerivedDataCache
+/Intermediate
+/Saved
 *.sln
+/Plugins/Developer/RiderLink
+/.idea
+/_ReSharper.Caches

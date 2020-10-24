@@ -5,9 +5,14 @@
 	"Description": "",
 	"Modules": [
 		{
-			"Name": "gd_company",
+			"Name": "GD",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Slate",
+				"SlateCore",
+				"Engine"
+			]
 		}
 	]
 }
