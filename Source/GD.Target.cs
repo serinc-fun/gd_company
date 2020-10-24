@@ -3,12 +3,12 @@
 using UnrealBuildTool;
 using System.Collections.Generic;
 
-public class gd_companyTarget : TargetRules
+public class GDTarget : TargetRules
 {
-	public gd_companyTarget( TargetInfo Target) : base(Target)
+	public GDTarget( TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Game;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
-		ExtraModuleNames.AddRange( new string[] { "gd_company" } );
+		ExtraModuleNames.AddRange( new string[] { "GD" } );
 	}
 }

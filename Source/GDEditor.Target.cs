@@ -3,12 +3,12 @@
 using UnrealBuildTool;
 using System.Collections.Generic;
 
-public class gd_companyEditorTarget : TargetRules
+public class GDEditorTarget : TargetRules
 {
-	public gd_companyEditorTarget( TargetInfo Target) : base(Target)
+	public GDEditorTarget( TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
-		ExtraModuleNames.AddRange( new string[] { "gd_company" } );
+		ExtraModuleNames.AddRange( new string[] { "GD" } );
 	}
 }
