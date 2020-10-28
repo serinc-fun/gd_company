@@ -3,3 +3,7 @@
 
 #include "BaseItemAsset.h"
 
+UBaseItemAsset::UBaseItemAsset()
+{
+    
+}

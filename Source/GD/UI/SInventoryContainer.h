@@ -4,8 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "Widgets/SCompoundWidget.h"
+#include "Widgets/Views/STileView.h"
 
+class UBaseItemAsset;
 class UInventoryComponent;
+
+struct FItemData
+{
+	TWeakObjectPtr<UBaseItemAsset> Item;
+	int32 Count;
+};
+
+
 /**
  * 
  */
@@ -20,8 +30,14 @@ public:
 
 protected:
 
+	TSharedPtr<STileView<TSharedPtr<FItemData>>> wItemsList;
+	
 	TWeakObjectPtr<UInventoryComponent> InventoryComponent;
+	TArray<TSharedPtr<FItemData>> ItemsList;
+	
 
 	void OnInventoryUpdate();
+	TSharedRef<ITableRow> GenerateItemTile(TSharedPtr<FItemData> InItem, const TSharedRef<STableViewBase>& InTable);
+	TSharedRef<SWidget> GenerateItemRow(TWeakObjectPtr<UBaseItemAsset> InItem);
 	
 };
