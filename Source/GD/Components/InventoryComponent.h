@@ -25,6 +25,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Inventory)
 	void AddItems(TArray<UBaseItemAsset*> InItems);
 
+	UFUNCTION(BlueprintCallable, Category = Inventory)
+	bool RemoveItem(UBaseItemAsset* InItem, int32 InAmountToRemove = 1);
+	
 	FOnInventoryAction OnInventoryUpdate;
 	
 	UPROPERTY(Transient)

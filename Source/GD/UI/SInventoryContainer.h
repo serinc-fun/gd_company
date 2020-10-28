@@ -31,13 +31,21 @@ public:
 protected:
 
 	TSharedPtr<STileView<TSharedPtr<FItemData>>> wItemsList;
+	TSharedPtr<SComboBox<TWeakObjectPtr<UBaseItemAsset>>> wSelector;
 	
 	TWeakObjectPtr<UInventoryComponent> InventoryComponent;
-	TArray<TSharedPtr<FItemData>> ItemsList;
 	
+	TArray<TSharedPtr<FItemData>> ItemsList;
+	TArray<TWeakObjectPtr<UBaseItemAsset>> SelectorList;
+
+	TWeakObjectPtr<UBaseItemAsset> SelectedItem;
+	TSharedPtr<FItemData> SelectedInventoryItem;
 
 	void OnInventoryUpdate();
 	TSharedRef<ITableRow> GenerateItemTile(TSharedPtr<FItemData> InItem, const TSharedRef<STableViewBase>& InTable);
 	TSharedRef<SWidget> GenerateItemRow(TWeakObjectPtr<UBaseItemAsset> InItem);
-	
+
+	FReply OnButtonClicked(bool bAddButton);
+	void OnSelectorSelected(TWeakObjectPtr<UBaseItemAsset> InItem, ESelectInfo::Type SelectInfo);
+	void OnInventorySelected(TSharedPtr<FItemData> InItem, ESelectInfo::Type SelectInfo);
 };

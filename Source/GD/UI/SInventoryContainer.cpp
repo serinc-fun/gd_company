@@ -3,8 +3,10 @@
 
 #include "SInventoryContainer.h"
 #include "SlateOptMacros.h"
+#include "GD/Utilities.h"
 #include "GD/Components/InventoryComponent.h"
 #include "Widgets/Views/STileView.h"
+
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 void SInventoryContainer::Construct(const FArguments& InArgs, UInventoryComponent* InInventory)
@@ -22,18 +24,27 @@ void SInventoryContainer::Construct(const FArguments& InArgs, UInventoryComponen
 				SNew(SHorizontalBox)
 				+ SHorizontalBox::Slot()
 				[
-					SNew(SComboBox<TWeakObjectPtr<UBaseItemAsset>>)
+					SAssignNew(wSelector, SComboBox<TWeakObjectPtr<UBaseItemAsset>>)
+					.OptionsSource(&SelectorList)
 					.OnGenerateWidget(this, &SInventoryContainer::GenerateItemRow)
+					.OnSelectionChanged(this, &SInventoryContainer::OnSelectorSelected)
+					.Content()
+					[
+						SNew(STextBlock)
+						.Text_Lambda([&] { return SelectedItem.IsValid() ? SelectedItem->Title : FText::FromString("NULL"); })
+					]
 				]
 				+ SHorizontalBox::Slot()
 				[
 	                SNew(SButton)
 	                .Text(NSLOCTEXT("Inventory", "Container.AddSelected", "Add Selected"))
+	                .OnClicked(this, &SInventoryContainer::OnButtonClicked, true)
 	            ]
 				+ SHorizontalBox::Slot()
 				[
 					SNew(SButton)
 					.Text(NSLOCTEXT("Inventory", "Container.RemoveItem", "Remove"))
+					.OnClicked(this, &SInventoryContainer::OnButtonClicked, false)
 				]
 			]
 		]
@@ -43,12 +54,27 @@ void SInventoryContainer::Construct(const FArguments& InArgs, UInventoryComponen
 			.SelectionMode(ESelectionMode::Single)
 			.ListItemsSource(&ItemsList)
 			.OnGenerateTile(this, &SInventoryContainer::GenerateItemTile)
+			.OnSelectionChanged(this, &SInventoryContainer::OnInventorySelected)
 		]
 	];
 
 	if (InventoryComponent.IsValid())
 	{
 		InventoryComponent->OnInventoryUpdate.AddSP(this, &SInventoryContainer::OnInventoryUpdate);
+		
+		TArray<FAssetData> OutAssets;
+		if (UUtilities::GetAllAssetData(UBaseItemAsset::StaticClass(), OutAssets))
+		{			
+			for (auto asset : OutAssets)
+			{
+				if (auto castedAsset = Cast<UBaseItemAsset>(asset.GetAsset()))
+				{
+					SelectorList.Add(castedAsset);
+				}
+			}
+		}
+
+		wSelector->RefreshOptions();
 	}
 }
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
@@ -95,4 +121,34 @@ TSharedRef<SWidget> SInventoryContainer::GenerateItemRow(TWeakObjectPtr<UBaseIte
                 SNew(STextBlock)
                 .Text(InItem->Title)
             ];
+}
+
+FReply SInventoryContainer::OnButtonClicked(bool bAddButton)
+{
+	if (bAddButton)
+	{
+		if (SelectedItem.IsValid() && InventoryComponent.IsValid())
+		{
+			InventoryComponent->AddItem(SelectedItem.Get());
+		}
+	}
+	else
+	{
+		if (SelectedInventoryItem.IsValid() && InventoryComponent.IsValid())
+		{
+			InventoryComponent->RemoveItem(SelectedInventoryItem->Item.Get());
+		}
+	}
+	
+	return FReply::Handled();
+}
+
+void SInventoryContainer::OnSelectorSelected(TWeakObjectPtr<UBaseItemAsset> InItem, ESelectInfo::Type SelectInfo)
+{
+	SelectedItem = InItem;
+}
+
+void SInventoryContainer::OnInventorySelected(TSharedPtr<FItemData> InItem, ESelectInfo::Type SelectInfo)
+{
+	SelectedInventoryItem = InItem;
 }

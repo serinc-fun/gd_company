@@ -25,3 +25,21 @@ void UInventoryComponent::AddItems(TArray<UBaseItemAsset*> InItems)
 
     OnInventoryUpdate.Broadcast();
 }
+
+bool UInventoryComponent::RemoveItem(UBaseItemAsset* InItem, int32 InAmountToRemove)
+{
+    if (Inventory.Contains(InItem))
+    {
+        auto& item = Inventory.FindChecked(InItem);
+        item -= InAmountToRemove;
+
+        if (item <= 0)
+        {
+            Inventory.Remove(InItem);
+        }
+
+        return true;
+    }
+
+    return false;
+}
