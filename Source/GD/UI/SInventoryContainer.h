@@ -38,7 +38,7 @@ protected:
 	TArray<TSharedPtr<FItemData>> ItemsList;
 	TArray<TWeakObjectPtr<UBaseItemAsset>> SelectorList;
 
-	TWeakObjectPtr<UBaseItemAsset> SelectedItem;
+	TSharedPtr<FItemData> SelectedItem;
 	TSharedPtr<FItemData> SelectedInventoryItem;
 
 	void OnInventoryUpdate();
