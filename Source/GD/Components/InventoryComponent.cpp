@@ -38,6 +38,7 @@ bool UInventoryComponent::RemoveItem(UBaseItemAsset* InItem, int32 InAmountToRem
             Inventory.Remove(InItem);
         }
 
+        OnInventoryUpdate.Broadcast();        
         return true;
     }
 

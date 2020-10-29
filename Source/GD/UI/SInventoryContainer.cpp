@@ -46,16 +46,18 @@ public:
 	                .Text(this, &SInventoryItem::GetTitle)
 	                .Font(FCoreStyle::GetDefaultFontStyle(NAME_None, 24))
 	                .Justification(ETextJustify::Center)
+	                .ColorAndOpacity(FSlateColor(FColorList::Orange))
 	            ]
 	            + SOverlay::Slot().HAlign(HAlign_Right).VAlign(VAlign_Bottom)
 	            [
 	            	SNew(SBorder)
 	            	.BorderImage(new FSlateColorBrush(FLinearColor::Black))
-	            	.Padding(2)
+	            	.Padding(0)
 	            	[
 	            		SNew(STextBlock)
 		                .Text(this, &SInventoryItem::GetCount)
 		                .Font(FCoreStyle::GetDefaultFontStyle(NAME_None, 24))
+		                .ColorAndOpacity(FSlateColor(FColorList::Orange))
 		                .Justification(ETextJustify::Center)
 	            	]
 	            ]
@@ -107,7 +109,7 @@ void SInventoryContainer::Construct(const FArguments& InArgs, UInventoryComponen
 	
 	ChildSlot.HAlign(HAlign_Left).VAlign(VAlign_Bottom)
 	[
-		SNew(SBox).WidthOverride(600).HeightOverride(600)
+		SNew(SBox).WidthOverride(600).HeightOverride(350)
 		[
 			SNew(SVerticalBox)
 			+ SVerticalBox::Slot().AutoHeight()
